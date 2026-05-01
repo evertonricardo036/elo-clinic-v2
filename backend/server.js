@@ -38,3 +38,21 @@ app.post('/clinics', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+app.put('/clinics/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const { name, cnpj } = req.body;
+
+    const clinic = clinics.find(c => c.id === id);
+
+if (!clinic) {
+    return res.status(404).json({ message: 'Clinic not found'});
+}
+
+clinic.name = name;
+clinic.cnpj = cnpj;
+
+res.json(clinic);
+});
+
+

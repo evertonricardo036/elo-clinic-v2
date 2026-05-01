@@ -1,3 +1,4 @@
+Author: Everton Ricardo
 # Elo Clinic System V2
 
 Elo Clinic System is a web application designed to help therapy clinics and independent professionals manage appointments, attendance records, working hours, payments, and technical reports.
