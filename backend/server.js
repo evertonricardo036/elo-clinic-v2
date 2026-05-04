@@ -35,10 +35,6 @@ app.post('/clinics', (req, res) => {
     res.status(201).json(newClinic);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
-
 app.put('/clinics/:id', (req, res) => {
     const id = Number(req.params.id);
     const { name, cnpj } = req.body;
@@ -69,6 +65,40 @@ app.delete('/clinics/:id', (req, res) => {
 
     res.json({ message: 'Clinic deleted' });
 });
+
+const professionals = [
+    {
+        id: 1,
+        name: "Everton",
+        specialty: "AT",
+        hourlyRate: 70
+  }
+];
+
+app.get('/professionals', (req, res) => {
+    res.json(professionals);
+});
+
+app.post('/professionals', (req, res) => {
+  const { name, specialty, hourlyRate } = req.body;
+  
+  const newProfessional = {
+    id: professionals.length + 1,
+    name,
+    specialty,
+    hourlyRate
+  };
+
+  professionals.push(newProfessional);
+
+  res.status(201).json(newProfessional);
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+
 
 
 
