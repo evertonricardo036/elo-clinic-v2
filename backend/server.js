@@ -94,6 +94,36 @@ app.post('/professionals', (req, res) => {
   res.status(201).json(newProfessional);
 });
 
+app.put('/professionals/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const { name, specialty, hourlyRate } = req.body;
+   
+    const professional = professionals.find(p => p.id === id);
+    
+    if (!professional) {
+        return res.status(404).json({ message: 'Professional not found'});
+    }
+
+    professional.name = name;
+    professional.specialty = specialty;
+    professional.hourlyRate = hourlyRate;
+
+    res.json(professional)
+}); 
+
+app.delete('/professionals/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const index = professionals.findIndex(p => p.id === id);
+
+        if (index === -1) {
+        return res.status(404).json({ message: 'Professional not found'});
+    } 
+
+    professionals.splice(index, 1);
+
+    res.json({ message: 'Professional deleted'});
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
