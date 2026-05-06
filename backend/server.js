@@ -124,6 +124,34 @@ app.delete('/professionals/:id', (req, res) => {
     res.json({ message: 'Professional deleted'});
 });
 
+const patients = [
+    {
+       id: 1,
+       name: "Paciente 1",
+       age: 9,
+       diagnosis: "TEA"
+    }
+];
+
+app.get('/patients', (req, res) => {
+    res.json(patients);
+});
+
+app.post('/patients', (req, res) => {
+    const { name, age, diagnosis } = req.body;
+
+    const newPatient =  {
+        id: patients.length + 1,
+        name,
+        age,
+        diagnosis
+    };
+
+    patients.push(newPatient);
+
+    res.status(201).json(newPatient);
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
