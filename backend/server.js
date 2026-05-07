@@ -152,6 +152,24 @@ app.post('/patients', (req, res) => {
     res.status(201).json(newPatient);
 });
 
+app.put('/patients/:id', (req, res) => {
+    const id = Number(req.params.id);
+
+    const { name, age, diagnosis } = req.body;
+
+    const patient = patients.find(p => p.id === id);
+
+    if (!patient) {
+        return res.status(404).json({ message: 'Patient not found'});
+    }
+
+    patient.name = name;
+    patient.age = age;
+    patient.diagnosis = diagnosis;
+
+    res.json(patient);
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
