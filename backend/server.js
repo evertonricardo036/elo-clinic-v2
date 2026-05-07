@@ -170,6 +170,20 @@ app.put('/patients/:id', (req, res) => {
     res.json(patient);
 });
 
+app.delete('/patients/:id', (req, res) => {
+    const id = Number(req.params.id);
+
+    const index = patients.findIndex(p => p.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ message: 'Patient not found'});
+    }
+
+    patients.splice(index, 1);
+
+    res.json({ message: 'Patient deleted' });
+})
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
