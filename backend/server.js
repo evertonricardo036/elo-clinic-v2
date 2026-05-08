@@ -113,6 +113,7 @@ app.put('/professionals/:id', (req, res) => {
 
 app.delete('/professionals/:id', (req, res) => {
     const id = Number(req.params.id);
+    
     const index = professionals.findIndex(p => p.id === id);
 
         if (index === -1) {
@@ -182,7 +183,22 @@ app.delete('/patients/:id', (req, res) => {
     patients.splice(index, 1);
 
     res.json({ message: 'Patient deleted' });
-})
+});
+
+const appointments = [
+    {
+        id: 1,
+        clinicId: 1,
+        patientId: 1,
+        date: "2026-05-09",
+        status: "scheduled",
+        serviceType: "Plano de Saúde"
+    }
+];
+
+app.get('appointmetns', (req, res) => {
+    res.json(appointments);
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
