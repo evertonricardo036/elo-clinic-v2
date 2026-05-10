@@ -190,7 +190,7 @@ const appointments = [
         id: 1,
         clinicId: 1,
         patientId: 1,
-        date: "2026-05-09",
+        date: "2026-05-08",
         status: "scheduled",
         serviceType: "Plano de Saúde"
     }
@@ -198,6 +198,59 @@ const appointments = [
 
 app.get('appointmetns', (req, res) => {
     res.json(appointments);
+});
+
+app.post('/appointments', (req, res) => {
+    const { clinicId, professionalId, patientId, date, status, serviceType } = req.body;
+
+    const newAppointment = {
+        id: appointments.length + 1,
+        clinicId,
+        professionalId,
+        patientId,
+        date,
+        status,
+        serviceType
+    };
+
+    appointments.push(newAppointment);
+
+    res.status(201).json(newAppointment);
+});
+
+app.put('/appointments/:id', (req, res) => {
+    const id = Number(req.params.id);
+
+    const { clinicId, professionalId, patientId, date, status, serviceType } = req.body;
+
+    const appointment = appointments.find(a => a.id === id);
+
+    if (!appointment) {
+        return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    appointment.clinicId = clinicId;
+    appointment.professionalId = professionalId;
+    appointment.patientId = patientId;
+    appointment.date = date;
+    appointment.status = status;
+    appointment.serviceType = serviceType;
+
+    res.json(appointment);
+});
+
+app.delete('/appointments/:id', (req, res) => {
+    const id = Number(req.params.id);
+
+    const index = appointments.findIndex(a => a.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ message: 'Appointment not fiund' });
+    }
+    
+    appointments.splice(index, 1);
+
+    res.json({ message: 'Appointment deleted' });
 });
 
 app.listen(PORT, () => {
