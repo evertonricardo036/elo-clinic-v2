@@ -96,6 +96,7 @@ app.post('/professionals', (req, res) => {
 
 app.put('/professionals/:id', (req, res) => {
     const id = Number(req.params.id);
+    
     const { name, specialty, hourlyRate } = req.body;
    
     const professional = professionals.find(p => p.id === id);
@@ -189,6 +190,7 @@ const appointments = [
     {
         id: 1,
         clinicId: 1,
+        professionalId: 1,
         patientId: 1,
         date: "2026-05-08",
         status: "scheduled",
@@ -196,12 +198,16 @@ const appointments = [
     }
 ];
 
-app.get('appointmetns', (req, res) => {
+app.get('/appointments', (req, res) => {
     res.json(appointments);
 });
 
 app.post('/appointments', (req, res) => {
     const { clinicId, professionalId, patientId, date, status, serviceType } = req.body;
+
+    if (!clinicId || !professionalId || !patientId || !date || !status || !serviceType) {
+        return res.status(400).json({ message: 'All appointment fields are required'});
+    }
 
     const newAppointment = {
         id: appointments.length + 1,
@@ -245,7 +251,7 @@ app.delete('/appointments/:id', (req, res) => {
     const index = appointments.findIndex(a => a.id === id);
 
     if (index === -1) {
-        return res.status(404).json({ message: 'Appointment not fiund' });
+        return res.status(404).json({ message: 'Appointment not found' });
     }
     
     appointments.splice(index, 1);
