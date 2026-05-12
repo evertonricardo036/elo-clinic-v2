@@ -209,6 +209,30 @@ app.post('/appointments', (req, res) => {
         return res.status(400).json({ message: 'All appointment fields are required'});
     }
 
+    const clinicExists = clinics.find(c => c.id === clinicId);
+
+    if (!clinicExists) {
+        return res.status(400).json({ message: 'Clinic not found' });
+    }
+
+    const professionalExists = professionals.find(p => p.id === professionalId);
+
+    if (!professionalExists) {
+        return res.status(404).json({ message: 'Professional not found' });
+    }
+
+    const patientExists = patients.find(p => p.id === patientId);
+
+    if (!patientExists) {
+        return res.status(404).json({ message: 'Patient not found' });
+    }
+
+    const validStatuses = ['scheduled', 'completed', 'cancelled'];
+
+    if (!validStatuses.includes(status)) {
+        return res.status(400).json({ message: 'Invalid appointment status' });
+    }
+
     const newAppointment = {
         id: appointments.length + 1,
         clinicId,
