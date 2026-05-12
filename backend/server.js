@@ -1,17 +1,11 @@
 const express = require('express');
 
+const clinics = require('./data/clinics');
+
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-
-const clinics = [
-    {
-        id: 1, 
-        name: 'Clinica Exemplo',
-        cnpj: '00.000.000/0001-00'
-    }
-];
 
 app.get('/', (req, res) => {
     res.send('Elo clinic API is running');
