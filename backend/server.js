@@ -2,6 +2,8 @@ const express = require('express');
 
 const clinics = require('./data/clinics');
 
+const professionals = require('./data/professionals');
+
 const app = express();
 const PORT = 3000;
 
@@ -59,15 +61,6 @@ app.delete('/clinics/:id', (req, res) => {
 
     res.json({ message: 'Clinic deleted' });
 });
-
-const professionals = [
-    {
-        id: 1,
-        name: "Everton",
-        specialty: "AT",
-        hourlyRate: 70
-  }
-];
 
 app.get('/professionals', (req, res) => {
     res.json(professionals);
