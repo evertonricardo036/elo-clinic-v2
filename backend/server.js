@@ -4,6 +4,11 @@ const clinics = require('./data/clinics');
 
 const professionals = require('./data/professionals');
 
+const patients = require('./data/patients');
+
+const appointments = require('./data/appointments');
+
+
 const app = express();
 const PORT = 3000;
 
@@ -113,15 +118,6 @@ app.delete('/professionals/:id', (req, res) => {
     res.json({ message: 'Professional deleted'});
 });
 
-const patients = [
-    {
-       id: 1,
-       name: "Paciente 1",
-       age: 9,
-       diagnosis: "TEA"
-    }
-];
-
 app.get('/patients', (req, res) => {
     res.json(patients);
 });
@@ -172,18 +168,6 @@ app.delete('/patients/:id', (req, res) => {
 
     res.json({ message: 'Patient deleted' });
 });
-
-const appointments = [
-    {
-        id: 1,
-        clinicId: 1,
-        professionalId: 1,
-        patientId: 1,
-        date: "2026-05-08",
-        status: "scheduled",
-        serviceType: "Plano de Saúde"
-    }
-];
 
 app.get('/appointments', (req, res) => {
     res.json(appointments);
