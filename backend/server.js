@@ -8,18 +8,17 @@ const patients = require('./data/patients');
 
 const appointments = require('./data/appointments');
 
+const clinicsRoutes = require('./routes/clinics.routes');
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
+app.use(clinicsRoutes);
+
 app.get('/', (req, res) => {
     res.send('Elo clinic API is running');
-});
-
-app.get('/clinics', (req, res) => {
-    res.json(clinics);
 });
 
 app.post('/clinics', (req, res) => {
