@@ -24,20 +24,6 @@ app.get('/', (req, res) => {
     res.send('Elo clinic API is running');
 });
 
-app.post('/clinics', (req, res) => {
-    const { name, cnpj } = req.body
-
-    const newClinic = {
-        id: clinics.length + 1,
-        name,
-        cnpj
-    };
-
-    clinics.push(newClinic);
-
-    res.status(201).json(newClinic);
-});
-
 app.put('/clinics/:id', (req, res) => {
     const id = Number(req.params.id);
     const { name, cnpj } = req.body;
