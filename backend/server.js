@@ -24,37 +24,6 @@ app.get('/', (req, res) => {
     res.send('Elo clinic API is running');
 });
 
-app.put('/clinics/:id', (req, res) => {
-    const id = Number(req.params.id);
-    const { name, cnpj } = req.body;
-
-    const clinic = clinics.find(c => c.id === id);
-
-if (!clinic) {
-    return res.status(404).json({ message: 'Clinic not found'});
-}
-
-clinic.name = name;
-clinic.cnpj = cnpj;
-
-res.json(clinic);
-});
-
-app.delete('/clinics/:id', (req, res) => {
-    const id = Number(req.params.id);
-
-    const index = clinics.findIndex(c => c.id === id);
-
-    if (index === -1) {
-        return res.status(404).json({ message: 'Clinic not found' });
-
-    }
-
-    clinics.splice(index, 1);
-
-    res.json({ message: 'Clinic deleted' });
-});
-
 app.post('/professionals', (req, res) => {
   const { name, specialty, hourlyRate } = req.body;
   
