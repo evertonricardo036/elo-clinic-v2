@@ -24,52 +24,6 @@ app.get('/', (req, res) => {
     res.send('Elo clinic API is running');
 }); 
 
-app.post('/appointments', (req, res) => {
-    const { clinicId, professionalId, patientId, date, status, serviceType } = req.body;
-
-    if (!clinicId || !professionalId || !patientId || !date || !status || !serviceType) {
-        return res.status(400).json({ message: 'All appointment fields are required'});
-    }
-
-    const clinicExists = clinics.find(c => c.id === clinicId);
-
-    if (!clinicExists) {
-        return res.status(400).json({ message: 'Clinic not found' });
-    }
-
-    const professionalExists = professionals.find(p => p.id === professionalId);
-
-    if (!professionalExists) {
-        return res.status(404).json({ message: 'Professional not found' });
-    }
-
-    const patientExists = patients.find(p => p.id === patientId);
-
-    if (!patientExists) {
-        return res.status(404).json({ message: 'Patient not found' });
-    }
-
-    const validStatuses = ['scheduled', 'completed', 'cancelled'];
-
-    if (!validStatuses.includes(status)) {
-        return res.status(400).json({ message: 'Invalid appointment status' });
-    }
-
-    const newAppointment = {
-        id: appointments.length + 1,
-        clinicId,
-        professionalId,
-        patientId,
-        date,
-        status,
-        serviceType
-    };
-
-    appointments.push(newAppointment);
-
-    res.status(201).json(newAppointment);
-});
-
 app.put('/appointments/:id', (req, res) => {
     const id = Number(req.params.id);
 
