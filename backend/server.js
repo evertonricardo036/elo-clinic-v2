@@ -24,27 +24,6 @@ app.get('/', (req, res) => {
     res.send('Elo clinic API is running');
 }); 
 
-app.put('/appointments/:id', (req, res) => {
-    const id = Number(req.params.id);
-
-    const { clinicId, professionalId, patientId, date, status, serviceType } = req.body;
-
-    const appointment = appointments.find(a => a.id === id);
-
-    if (!appointment) {
-        return res.status(404).json({ message: 'Appointment not found' });
-    }
-
-    appointment.clinicId = clinicId;
-    appointment.professionalId = professionalId;
-    appointment.patientId = patientId;
-    appointment.date = date;
-    appointment.status = status;
-    appointment.serviceType = serviceType;
-
-    res.json(appointment);
-});
-
 app.delete('/appointments/:id', (req, res) => {
     const id = Number(req.params.id);
 

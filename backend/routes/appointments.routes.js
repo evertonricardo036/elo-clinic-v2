@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 
 const appointments = require('../data/appointments');
-const clinics = require('../data/appointments');
-const professionals = require('../data/clinics');
+const clinics = require('../data/clinics');
+const professionals = require('../data/professionals');
 const patients = require('../data/patients');
 
 router.get('/appointments', (req, res) => {
@@ -55,6 +55,27 @@ router.post('/appointments', (req, res) => {
     appointments.push(newAppointment);
 
     res.status(201).json(newAppointment);
+});
+
+module.exports = router;
+
+router.put('/appointments/:id', (req, res) => {
+    
+    const id = Number(req.params.id);
+
+    const { date, status, serviceType } = req.body;
+
+    const appointment = appointments.find(a => a.id === id);
+
+    if(!appointment) {
+        return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+appointment.date = date;          
+appointment.status = status;
+appointment.serviceType = serviceType;
+
+res.json(appointment);
 });
 
 module.exports = router;
