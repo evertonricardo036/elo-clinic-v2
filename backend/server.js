@@ -22,20 +22,6 @@ app.use(appointmentsRoutes);
 
 app.get('/', (req, res) => {
     res.send('Elo clinic API is running');
-}); 
-
-app.delete('/appointments/:id', (req, res) => {
-    const id = Number(req.params.id);
-
-    const index = appointments.findIndex(a => a.id === id);
-
-    if (index === -1) {
-        return res.status(404).json({ message: 'Appointment not found' });
-    }
-    
-    appointments.splice(index, 1);
-
-    res.json({ message: 'Appointment deleted' });
 });
 
 app.listen(PORT, () => {

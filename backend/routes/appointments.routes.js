@@ -79,3 +79,19 @@ res.json(appointment);
 });
 
 module.exports = router;
+
+router.delete('/appointments/:id', (req, res) => {
+    const id = Number(req.params.id);
+
+    const index = appointments.findIndex(a => a.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    appointments.splice(index, 1);
+
+    res.json({ message: 'Appointment deleted' });
+});
+
+module.exports = router;
