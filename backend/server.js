@@ -10,10 +10,22 @@ const professionalsRoutes = require('./routes/professionals.routes');
 const patientsRoutes = require('./routes/patients.routes');
 const appointmentsRoutes = require('./routes/appointments.routes');
 
+const requestLogger = require('./middlewares/requestLogger');
+
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+app.use(requestLogger);
+
+app.use((req, res, next) => {
+    if (req.method === 'POST' && req.body.name === '') {
+        return res.status(404).json({ message: 'Name is required'})
+    }
+
+    next();
+});
 
 app.use(clinicsRoutes);
 app.use(professionalsRoutes);
