@@ -6,21 +6,9 @@ const clinics = require('../data/clinics');
 
 const clinicsController = require('../controllers/clinics.controller');
 
+router.post('/clinics', clinicsController.createClinic);
+
 router.get('/clinics', clinicsController.getClinics);
-
-router.post('/clinics', (req, res) => {
-    const {name, cnpj } = req.body;
-
-    const newClinic = {
-        id: clinics.length + 1,
-        name,
-        cnpj
-    };
-    
-    clinics.push(newClinic);
-
-    res.status(201).json(newClinic);
-});
 
 router.put('/clinics/:id', (req, res) => {
     const id = Number(req.params.id);
