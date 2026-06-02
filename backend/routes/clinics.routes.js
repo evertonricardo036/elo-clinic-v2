@@ -4,9 +4,9 @@ const router = express.Router();
 
 const clinics = require('../data/clinics');
 
-router.get('/clinics', (req, res) => {
-    res.json(clinics);
-});
+const clinicsController = require('../controllers/clinics.controller');
+
+router.get('/clinics', clinicsController.getClinics);
 
 router.post('/clinics', (req, res) => {
     const {name, cnpj } = req.body;
