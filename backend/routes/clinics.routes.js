@@ -10,22 +10,7 @@ router.post('/clinics', clinicsController.createClinic);
 
 router.get('/clinics', clinicsController.getClinics);
 
-router.put('/clinics/:id', (req, res) => {
-    const id = Number(req.params.id);
-
-    const { name, cnpj } = req.body;
-
-    const clinic = clinics.find(c => c.id === id);
-
-    if (!clinic) {
-        return res.status(404).json({ message: 'Clinic not found' });
-    }
-
-    clinic.name = name;
-    clinic.cnpj = cnpj;
-
-    res.json(clinic);
-});
+router.put('/clinics/:id', clinicsController.updateClinic);
 
 router.delete('/clinics/:id', (req, res) => {
     const id = Number(req.params.id);

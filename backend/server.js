@@ -13,6 +13,7 @@ const appointmentsRoutes = require('./routes/appointments.routes');
 const requestLogger = require('./middlewares/requestLogger');
 const validateName = require('./middlewares/validateName');
 
+
 const app = express();
 const PORT = 3000;
 

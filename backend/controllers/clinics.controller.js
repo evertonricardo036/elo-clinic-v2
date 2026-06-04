@@ -18,7 +18,25 @@ function createClinic(req, res) {
     res.status(201).json(newClinic);
 }
 
+function updateClinic(req, res) {
+    const id = Number(req.params.id);
+
+    const { name, cnpj } = req.body;
+
+    const clinic = clinics.find(c => c.id === id);
+
+    if (!clinic) {
+        return res.status(404).json({ message: ' Clinic not found' });
+    }
+
+    clinic.name = name;
+    clinic.cnpj = cnpj;
+
+    res.json(clinic);
+}
+
 module.exports = {
     getClinics,
-    createClinic
+    createClinic,
+    updateClinic
 };
