@@ -35,8 +35,23 @@ function updateClinic(req, res) {
     res.json(clinic);
 }
 
+function deleteClinic(req, res) {
+    const id = Number(req.params.id);
+
+    const index = clinics.findIndex(c => c.id === id);
+
+    if ( index === -1) {
+        return res.status(404).json({ message: 'Clincic not found' });
+    }
+
+    clinics.splice(index, 1);
+
+    res.json({ message: 'Clinic deleted' });
+}
+
 module.exports = {
     getClinics,
     createClinic,
-    updateClinic
+    updateClinic,
+    deleteClinic,
 };
