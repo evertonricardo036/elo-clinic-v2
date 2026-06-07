@@ -4,9 +4,9 @@ const router = express.Router();
 
 const professionals = require('../data/professionals');
 
-router.get('/professionals', (req, res) => {
-    res.json(professionals);
-});
+const professionalsController = require('../controllers/professionals.controller');
+
+router.get('/professionals', professionalsController.getProfessionals);
 
 router.post('/professionals', (req, res) => {
     const { name, specialty, hourlyRate } = req.body;
