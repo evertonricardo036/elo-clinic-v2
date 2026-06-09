@@ -1,10 +1,5 @@
 const express = require('express');
 
-const clinics = require('./data/clinics');
-const professionals = require('./data/professionals');
-const patients = require('./data/patients');
-const appointments = require('./data/appointments');
-
 const clinicsRoutes = require('./routes/clinics.routes');
 const professionalsRoutes = require('./routes/professionals.routes');
 const patientsRoutes = require('./routes/patients.routes');
