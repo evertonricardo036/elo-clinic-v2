@@ -1,57 +1,39 @@
-const clinics = require('../data/clinics');
+const clinicsService = require('../services/clinics.service');
 
 function getClinics(req, res) {
-    res.json(clinics);
+    const result = clinicsService.getAll();
+    res.json(result);
 }
 
 function createClinic(req, res) {
-    const { name, cnpj } = req.body;
-
-    const newClinic = {
-        id: clinics.length + 1,
-        name,
-        cnpj
-    };
-
-    clinics.push(newClinic);
-
-    res.status(201).json(newClinic);
+    const result = clinicsService.create(req.body);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
+    }
+    res.status(201).json(result);
 }
 
 function updateClinic(req, res) {
     const id = Number(req.params.id);
-
-    const { name, cnpj } = req.body;
-
-    const clinic = clinics.find(c => c.id === id);
-
-    if (!clinic) {
-        return res.status(404).json({ message: ' Clinic not found' });
+    const result = clinicsService.update(id, req.body);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    clinic.name = name;
-    clinic.cnpj = cnpj;
-
-    res.json(clinic);
+    res.json(result);
 }
 
 function deleteClinic(req, res) {
     const id = Number(req.params.id);
-
-    const index = clinics.findIndex(c => c.id === id);
-
-    if ( index === -1) {
-        return res.status(404).json({ message: 'Clincic not found' });
+    const result = clinicsService.remove(id);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    clinics.splice(index, 1);
-
-    res.json({ message: 'Clinic deleted' });
+    res.json(result);
 }
 
 module.exports = {
     getClinics,
     createClinic,
     updateClinic,
-    deleteClinic,
+    deleteClinic
 };
