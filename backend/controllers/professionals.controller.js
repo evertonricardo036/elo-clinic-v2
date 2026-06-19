@@ -1,54 +1,31 @@
-const professionals = require('../data/professionals');
+const professionalsService = require('../services/professionals.service');
 
 function getProfessionals(req, res) {
-    res.json(professionals);
+    const result = professionalsService.getAll();
+    res.json(result);
 }
 
 function createProfessional(req, res) {
-    const { name, specialty, hourlyRate } = req.body;
-
-    const newProfessional = {
-        id: professionals.length + 1,
-        name, 
-        specialty,
-        hourlyRate
-    };
-
-    professionals.push(newProfessional);
-
-    res.status(201).json(newProfessional);
+    const result = professionalsService.create(req.body);
+    res.status(201).json(result);
 }
 
 function updateProfessional(req, res) {
     const id = Number(req.params.id);
-
-    const { name, specialty, hourlyRate } = req.body;
-
-    const professional = professionals.find(p => p.id === id);
-
-    if (!professional) {
-        return res.status(404).json({ message: 'Professional not found' });
+    const result = professionalsService.update(id, req.body);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    professional.name = name;
-    professional.specialty = specialty;
-    professional.hourlyRate = hourlyRate;
-
-    res.json(professional);
+    res.json(result);
 }
 
 function deleteProfessional(req, res) {
     const id = Number(req.params.id);
-
-    const index = professionals.findIndex(p => p.id === id);
-
-    if (index === -1) {
-        return res.status(404).json({ message: 'Professional not found' });
+    const result = professionalsService.remove(id);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    professionals.splice(index, 1);
-
-    res.json({ message: 'Professional deleted' });
+    res.json(result);
 }
 
 module.exports = {
