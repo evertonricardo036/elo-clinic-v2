@@ -1,62 +1,35 @@
-const patients = require('../data/patients');
+const patientsService = require('../services/patients.service');
 
 function getPatients(req, res) {
-    res.json(patients);
+    const result = patientsService.getAll();
+    res.json(result)
 }
 
 function createPatient(req, res) {
-    const { name, cpf } = req.body;
+    const result = patientsService.create(req.body);
 
-    const duplicate = patients.find(p => p.cpf === cpf);
-
-    if (duplicate) {
-        return res.status(400).json({ message: 'CPF already exists' });
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    const newPatient = {
-        id: patients.length + 1,
-        name,
-        cpf
-    };
-
-    patients.push(newPatient);
-    res.status(201).json(newPatient);
+    res.status(201).json(result);
 }
 
 function updatePatient(req, res) {
     const id = Number(req.params.id);
-    const { name, cpf } = req.body;
-
-    const patient = patients.find(p => p.id === id);
-
-    if (!patient) {
-        return res.status(404).json({ message: 'Patient not found' });
+    const result = patientsService.update(id, req.body);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    const duplicate = patients.find(p => p.cpf === cpf && p.id !== id);
-
-    if (duplicate) {
-        return res.status(400).json({ message: 'CPF already exists' });
-    }
-
-    patient.name = name;
-    patient.cpf = cpf;
-
-    res.json(patient);
+    res.json(result);
 }
 
 function deletePatient(req, res) {
     const id = Number(req.params.id);
-
-    const index = patients.findIndex(p => p.id === id);
-
-    if (index === -1) {
-        return res.status(404).json({ message: 'Patient not found' });
+    const result = patientsService.remove(id);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    patients.splice(index, 1);
-
-    res.json({ message: 'Patient deleted' });
+    res.json(result);
 }
 
 module.exports = {
