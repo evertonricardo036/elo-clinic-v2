@@ -1,84 +1,34 @@
-const appointments = require('../data/appointments');
-const clinics = require('../data/clinics');
-const professionals = require('../data/professionals');
-const patients = require('../data/patients');
-
-const validStatuses = ['scheduled', 'completed', 'cancelled'];
+const appointmentsService = require('../services/appointments.service');
 
 function getAppointments(req, res) {
-    res.json(appointments);
+    const result = appointmentsService.getAll();
+    res.json(result);
 }
 
 function createAppointment(req, res) {
-    const { clinicId, professionalId, patientId, date, status, serviceType } = req.body;
-
-    if (!clinicId || !professionalId || !patientId || !date || !status || !serviceType) {
-        return res.status(400).json({ message: 'All appointment fields are required' });
+    const result = appointmentsService.create(req.body);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    const clinicExists = clinics.find(c => c.id === clinicId);
-    if (!clinicExists) {
-        return res.status(404).json({ message: 'Clinic not found' });
-    }
-
-    const professionalExists = professionals.find(p => p.id === professionalId);
-    if (!professionalExists) {
-        return res.status(404).json({ message: 'Professional not found' });
-    }
-
-    const patientExists = patients.find(p => p.id === patientId);
-    if (!patientExists) {
-        return res.status(404).json({ message: 'Patient not found' });
-    }
-
-    if (!validStatuses.includes(status)) {
-        return res.status(400).json({ message: 'Invalid appointment status' });
-    }
-
-    const newAppointment = {
-        id: appointments.length + 1,
-        clinicId,
-        professionalId,
-        patientId,
-        date,
-        status,
-        serviceType
-    };
-
-    appointments.push(newAppointment);
-    res.status(201).json(newAppointment);
+    res.status(201).json(result);
 }
 
 function updateAppointment(req, res) {
     const id = Number(req.params.id);
-    const { date, status, serviceType } = req.body;
-
-    const appointment = appointments.find(a => a.id === id);
-    if (!appointment) {
-        return res.status(404).json({ message: 'Appointment not found' });
+    const result = appointmentsService.update(id, req.body);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    if (!validStatuses.includes(status)) {
-        return res.status(400).json({ message: 'Invalid appointment status' });
-    }
-
-    appointment.date = date;
-    appointment.status = status;
-    appointment.serviceType = serviceType;
-
-    res.json(appointment);
+    res.json(result);
 }
 
 function deleteAppointment(req, res) {
     const id = Number(req.params.id);
-
-    const index = appointments.findIndex(a => a.id === id);
-    if (index === -1) {
-        return res.status(404).json({ message: 'Appointment not found' });
+    const result = appointmentsService.remove(id);
+    if (result.error) {
+        return res.status(result.status).json({ message: result.message });
     }
-
-    appointments.splice(index, 1);
-    res.json({ message: 'Appointment deleted' });
+    res.json(result);
 }
 
 module.exports = {
